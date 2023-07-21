@@ -11,9 +11,9 @@ use App\Http\Controllers\Api\Authentication\MfaController;
 use App\Http\Controllers\Api\Authentication\PasswordResetController;
 use App\Http\Controllers\Api\RatesController;
 use App\Http\Controllers\Api\CategoriesController;
-use App\Http\Controllers\Api\offersController;
-use App\Http\Controllers\Api\paymentController;
-use App\Http\Controllers\Api\ordersController;
+use App\Http\Controllers\Api\OffersController;
+use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\OrdersController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -122,17 +122,17 @@ Route::group(['middleware' => 'checkHeaderAuth'], function () {
     // Routes that require the header authentication
      // rates api 
      Route::apiResource('/rates', ratesController::class);
-     Route::apiResource('/categories', categoriesController::class);
-     Route::apiResource('/offers', offersController::class);
+     Route::apiResource('/categories', CategoriesController::class);
+     Route::apiResource('/offers', OffersController::class);
      
      // payments api
-     Route::post('/payments', [paymentController::class,'initiate']);
-     Route::get('/payments/{id}', [paymentController::class,'show']);
-     Route::post('/payments/callback', [paymentController::class,'callback']);
+     Route::post('/payments', [PaymentController::class,'initiate']);
+     Route::get('/payments/{id}', [PaymentController::class,'show']);
+     Route::post('/payments/callback', [PaymentController::class,'callback']);
  
  
      //orders api
-     Route::get('/orders/pending', [ordersController::class, 'pendingOrders']);
+     Route::get('/orders/pending', [OrdersController::class, 'pendingOrders']);
      Route::get('/orders/fullfilled', [ordersController::class, 'fullfilledOrders']);
      Route::get('/orders/airtime', [ordersController::class, 'airtimeOrders']);
      Route::get('/orders/offers', [ordersController::class, 'offerOrders']);
