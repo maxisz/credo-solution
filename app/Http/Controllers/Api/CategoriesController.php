@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Categories;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\ApiResource;
+
 class CategoriesController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $data = Categories::all();
+        $data = ApiResource::collection(categories::with(['offers'])->paginate(10))->response()->getData(true);
 
        $response = \AppHelper::resp('success', 200 , ['categories' => $data]);
        return $response;
@@ -82,8 +84,8 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $data = categories::find($id);
-        $data->offers = $data->offers;
+        $data = categories::with('offers')->find($id);
+       
 
         if($data)
         {

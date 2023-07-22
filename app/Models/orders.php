@@ -10,7 +10,7 @@ class orders extends Model
     use HasFactory;
 
 
-    protected $fillable = ["type","amount","offer_id","rate_id","payment_id","is_fullfilled","payment_id"];
+    protected $fillable = ["type","amount","phone","offer_id","rate_id","payment_id","is_fullfilled","payment_id"];
     // $table->id();
     // $table->string("type"); // offer , airtime
     // $table->integer("amount")->nullable();
@@ -25,7 +25,7 @@ class orders extends Model
     }
      public function rate()
     {
-        return $this->hasOne(offers::class,'id','rate_id');
+        return $this->hasOne(Rates::class,'id','rate_id');
     }
 
 

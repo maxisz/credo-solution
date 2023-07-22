@@ -18,8 +18,7 @@ class OffersController extends Controller
     public function index()
     {
         // $data = Offers::all();
-        
-        $data = ApiResource::collection(offers::paginate(10))->response()->getData(true);
+        $data = ApiResource::collection(offers::with('category')->paginate(10))->response()->getData(true);
        $response = \AppHelper::resp('success', 200 , ['offers' => $data]);
        return $response;
     }

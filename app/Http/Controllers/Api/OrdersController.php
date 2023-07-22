@@ -18,7 +18,7 @@ class OrdersController extends Controller
     public function index()
     {
         
-            $orders =  OrderResource::collection(orders::paginate(10))->response()->getData(true);
+            $orders =  OrderResource::collection(orders::with(['offer','rate'])->paginate(10))->response()->getData(true);
         
             $response = \AppHelper::resp('success',200, $orders);
 
@@ -29,7 +29,7 @@ class OrdersController extends Controller
     public function pendingOrders()
     {
 
-      $orders =  OrderResource::collection(orders::where('is_fullfilled','no')->paginate(10))->response()->getData(true);
+      $orders =  OrderResource::collection(orders::where('is_fullfilled','no')->with(['offer','rate'])->paginate(10))->response()->getData(true);
         
         $response = \AppHelper::resp('success',200, $orders);
 
@@ -38,7 +38,7 @@ class OrdersController extends Controller
     public function fullfilledOrders()
     {
 
-      $orders =  OrderResource::collection(orders::where('is_fullfilled','yes')->paginate(10))->response()->getData(true);
+      $orders =  OrderResource::collection(orders::where('is_fullfilled','yes')->with(['offer','rate'])->paginate(10))->response()->getData(true);
         
         $response = \AppHelper::resp('success',200, $orders);
 
@@ -48,7 +48,7 @@ class OrdersController extends Controller
     public function airtimeOrders()
     {
 
-      $orders =  OrderResource::collection(orders::where('type','airtime')->paginate(10))->response()->getData(true);
+      $orders =  OrderResource::collection(orders::where('type','airtime')->with(['offer','rate'])->paginate(10))->response()->getData(true);
         
         $response = \AppHelper::resp('success',200, $orders);
 
@@ -57,7 +57,7 @@ class OrdersController extends Controller
     public function offerOrders()
     {
 
-      $orders =  OrderResource::collection(orders::where('type','offer')->paginate(10))->response()->getData(true);
+      $orders =  OrderResource::collection(orders::where('type','offer')->with(['offer','rate'])->paginate(10))->response()->getData(true);
         $response = \AppHelper::resp('success',200, $orders);
     return $response;
     }
@@ -78,7 +78,7 @@ class OrdersController extends Controller
         return \AppHelper::resp('success',200,['order' => $order]);
 
     }
-
+ 
     
     /**
      * Update the specified resource in storage.

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string("type"); // offer , airtime
             $table->integer("amount")->nullable();
+            $table->string("phone");
             $table->integer("offer_id")->nullable();
             $table->integer("rate_id")->nullable();
             $table->integer("payment_id");

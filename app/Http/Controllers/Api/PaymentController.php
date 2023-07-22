@@ -125,7 +125,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $data = payments::where("tinypesa_account_id", $id)->first();
+        $data = payments::with('order.offer','order.rate')->where("tinypesa_account_id", $id)->first();
         if($data)
         {
         //    $data->order ?  $data->order= $data->order : $data->order = '';
@@ -136,21 +136,7 @@ class PaymentController extends Controller
 
 
 
-           if($data->orders)
-           {
-            $data->orders = $data->orders;
 
-            if($data->orders->offer)
-            {
-                $data->orders->offer;
-            }
-            if($data->orders->rate)
-            {
-                $data->orders->offer;
-            }
-
-            
-           }
 
       $response = \AppHelper::resp('success', 200, $data);
 
@@ -206,6 +192,7 @@ class PaymentController extends Controller
                 "rate_id" => $my_data[1],
                 "amount" => $my_data[2],
                 "payment_id" => $payment->id,
+                "phone" => $my_data[3],
                 "is_fullfilled" => "no",
             ];
             }else {
@@ -214,6 +201,7 @@ class PaymentController extends Controller
                     "offer_id" => $my_data[1],
                     "amount" => $my_data[2],
                     "payment_id" => $payment->id,
+                    "phone" => $my_data[3],
                     "is_fullfilled" => "no",
                 ];
 
