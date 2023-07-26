@@ -24,12 +24,14 @@ class CheckHeaderAuth
         foreach ($expectedHeaders as $headerName => $expectedValue) {
             $headerValue = $request->header($headerName);
 
-            if ($headerValue !== $expectedValue) {
-                // return response()->json(['error' => 'Unauthorized'], 401);
-                return $next($request);
-            }
+            // if ($headerValue !== $expectedValue) {
+            //     // return response()->json(['error' => 'Unauthorized'], 401);
+            //     return $next($request);
+            // }
         }
 
         return $next($request);
+
+
     }
 }

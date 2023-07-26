@@ -15,8 +15,8 @@ class AppHelper
             // "code" => $code,
             $data,
         ];
-        return $response;
+        return new \Illuminate\Http\Response($response, 200, ['Access-Control-Allow-Origin' => '*']);
     }
-    
+
 
 }

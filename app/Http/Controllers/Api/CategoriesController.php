@@ -19,11 +19,11 @@ class CategoriesController extends Controller
     {
         $data = ApiResource::collection(categories::with(['offers'])->paginate(10))->response()->getData(true);
 
-       $response = \AppHelper::resp('success', 200 , ['categories' => $data]);
-       return $response;
+        $response = \AppHelper::resp('success', 200, ['categories' => $data]);
+        return $response;
     }
 
-   
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,7 +40,7 @@ class CategoriesController extends Controller
             "provider_id" => "required|integer",
             "description" => "required|string|min:3",
         ]);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
@@ -54,21 +54,19 @@ class CategoriesController extends Controller
             }
 
             $code = 200;
-            $response = \AppHelper::resp('fail', $code, ['errors' =>  $errorMessages]);
+            $response = \AppHelper::resp('fail', $code, ['errors' => $errorMessages]);
 
 
         } else {
-         $info = Categories::create($request->all());
+            $info = Categories::create($request->all());
 
-         
-         if($info)
-         {
-             $response =  \AppHelper::resp('success',200, ['message' => 'Category created succesfully' ]);
 
-         }else 
-         {
-            $response = \AppHelper::resp('fail', $code, ['message' =>  'Category not created']);
-         }
+            if ($info) {
+                $response = \AppHelper::resp('success', 200, ['message' => 'Category created succesfully']);
+
+            } else {
+                $response = \AppHelper::resp('fail', $code, ['message' => 'Category not created']);
+            }
 
         }
 
@@ -85,23 +83,22 @@ class CategoriesController extends Controller
     public function show($id)
     {
         $data = categories::with('offers')->find($id);
-       
 
-        if($data)
-        {
-          $response = \AppHelper::resp('success', 200 , [
-              'category' => $data
-          ]);
-        }else {
-          $response = \AppHelper::resp('fail', 200 , [
-              'message' => "category not found"
-          ]); 
+
+        if ($data) {
+            $response = \AppHelper::resp('success', 200, [
+                'category' => $data
+            ]);
+        } else {
+            $response = \AppHelper::resp('fail', 200, [
+                'message' => "category not found"
+            ]);
         }
-          
+
         return $response;
     }
 
-   
+
 
     /**
      * Update the specified resource in storage.
@@ -113,12 +110,12 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            "slug" => "required|string|min:3|unique:categories,slug,".$id.",id",
+            "slug" => "required|string|min:3|unique:categories,slug," . $id . ",id",
             "title" => "required|string|min:3",
             "provider_id" => "required|integer",
             "description" => "required|string|min:3",
         ]);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
@@ -132,34 +129,32 @@ class CategoriesController extends Controller
             }
 
             $code = 200;
-            $response = \AppHelper::resp('fail', $code, ['errors' =>  $errorMessages]);
+            $response = \AppHelper::resp('fail', $code, ['errors' => $errorMessages]);
 
 
         } else {
             $category = Categories::find($id);
-            if($category)
-            {
+            if ($category) {
 
                 $category->title = $request->title;
                 $category->slug = $request->slug;
                 $category->provider_id = $request->provider_id;
                 $category->description = $request->description;
-    
-               
+
+
                 $data = $category->save();
-                if($data)
-                {
-                    $response = \AppHelper::resp('success', 200, ['message' =>  $category]);
-                }else {
-                    
-                    $response = \AppHelper::resp('success', 200, ['error' =>  "category not updated"]);
+                if ($data) {
+                    $response = \AppHelper::resp('success', 200, ['message' => $category]);
+                } else {
+
+                    $response = \AppHelper::resp('success', 200, ['error' => "category not updated"]);
                 }
 
 
 
 
             } else {
-                $response = \AppHelper::resp('fail', 200, ['error' =>  "category not found"]);
+                $response = \AppHelper::resp('fail', 200, ['error' => "category not found"]);
 
             }
 
@@ -171,7 +166,7 @@ class CategoriesController extends Controller
 
 
         }
-         
+
         return $response;
     }
 
@@ -185,26 +180,24 @@ class CategoriesController extends Controller
     {
         $category = category::find($id);
 
-      if($category)
-      {
+        if ($category) {
 
-          if($category->delete())
-          {
-    
-            $response = \AppHelper::resp('success', 200, ['message' =>  "category deleted succesfully"]);
-        }else{
-            
-            $response = \AppHelper::resp('fail', 200, ['message' =>  "category Not deleted"]);
-    
-          }
+            if ($category->delete()) {
 
-      }else{
+                $response = \AppHelper::resp('success', 200, ['message' => "category deleted succesfully"]);
+            } else {
 
-        $response = \AppHelper::resp('fail', 200, ['message' =>  "category Not found"]);
-      }
+                $response = \AppHelper::resp('fail', 200, ['message' => "category Not deleted"]);
+
+            }
+
+        } else {
+
+            $response = \AppHelper::resp('fail', 200, ['message' => "category Not found"]);
+        }
 
 
-     return $response;
-    
+        return $response;
+
     }
 }
