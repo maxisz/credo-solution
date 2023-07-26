@@ -20,10 +20,10 @@ class RatesController extends Controller
        $data = ApiResource::collection(rates::paginate(10))->response()->getData(true);
        $response = \AppHelper::resp('success', 200 , $data);
        return $response;
-       
+
     }
 
-    
+
 
     /**
      * Store a newly created resource in storage.
@@ -42,7 +42,7 @@ class RatesController extends Controller
             "buying_rate" => "required|integer|min:1",
             "balance" => "required|integer|min:1",
         ]);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
@@ -62,14 +62,14 @@ class RatesController extends Controller
         } else {
          $info = Rates::create($request->all());
 
-         
+
          if($info)
          {
              $response =  \AppHelper::resp('success',200, ['message' => 'Provider & and Rate created succesfully' ]);
 
-         }else 
+         }else
          {
-            $response = \AppHelper::resp('fail', $code, ['message' =>  'provider and plan not created']);
+            $response = \AppHelper::resp('fail', 200, ['message' =>  'provider and plan not created']);
          }
 
         }
@@ -97,13 +97,13 @@ class RatesController extends Controller
       }else {
         $response = \AppHelper::resp('fail', 200 , [
             'message' => "provider not found"
-        ]); 
+        ]);
       }
-        
+
       return $response;
     }
 
-   
+
     /**
      * Update the specified resource in storage.
      *
@@ -121,7 +121,7 @@ class RatesController extends Controller
             "buying_rate" => "required|integer|min:1",
             "balance" => "required|integer|min:1",
         ]);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
@@ -155,7 +155,7 @@ class RatesController extends Controller
 
                 $response = \AppHelper::resp('success', 200, ['error' =>  "rate & provider not updated"]);
             }
-            
+
 
 
         }
@@ -177,12 +177,12 @@ class RatesController extends Controller
 
           if($rate->delete())
           {
-    
+
             $response = \AppHelper::resp('success', 200, ['rate' =>  "Provider & Rate deleted succesfully"]);
         }else{
-            
+
             $response = \AppHelper::resp('fail', 200, ['rate' =>  "Provider & Rate Not deleted"]);
-    
+
           }
 
       }else{
@@ -192,7 +192,7 @@ class RatesController extends Controller
 
 
      return $response;
-    
-    
+
+
     }
 }

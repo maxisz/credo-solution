@@ -19,11 +19,11 @@ class OffersController extends Controller
     {
         // $data = Offers::all();
         $data = ApiResource::collection(offers::with('category')->paginate(10))->response()->getData(true);
-       $response = \AppHelper::resp('success', 200 , ['offers' => $data]);
-       return $response;
+        $response = \AppHelper::resp('success', 200, ['offers' => $data]);
+        return $response;
     }
 
-   
+
 
     /**
      * Store a newly created resource in storage.
@@ -38,9 +38,9 @@ class OffersController extends Controller
             "name" => "required|string|min:3",
             "price" => "required|integer|min:1",
             "category_id" => "required|integer",
-           
+
         ]);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
@@ -54,21 +54,19 @@ class OffersController extends Controller
             }
 
             $code = 200;
-            $response = \AppHelper::resp('fail', $code, ['errors' =>  $errorMessages]);
+            $response = \AppHelper::resp('fail', $code, ['errors' => $errorMessages]);
 
 
         } else {
-         $info = Offers::create($request->all());
+            $info = Offers::create($request->all());
 
-         
-         if($info)
-         {
-             $response =  \AppHelper::resp('success',200, ['message' => 'Offer created succesfully' ]);
 
-         }else 
-         {
-            $response = \AppHelper::resp('fail', $code, ['message' =>  'Offer not created']);
-         }
+            if ($info) {
+                $response = \AppHelper::resp('success', 200, ['message' => 'Offer created succesfully']);
+
+            } else {
+                $response = \AppHelper::resp('fail', 200, ['message' => 'Offer not created']);
+            }
 
         }
 
@@ -85,24 +83,23 @@ class OffersController extends Controller
     public function show($id)
     {
         $data = Offers::find($id);
-        $data-> category = $data->category;
+        $data->category = $data->category;
 
-        if($data)
-        {
-          $response = \AppHelper::resp('success', 200 , [
-              'offer' => $data,
-              
-          ]);
-        }else {
-          $response = \AppHelper::resp('fail', 200 , [
-              'message' => "offer not found"
-          ]); 
+        if ($data) {
+            $response = \AppHelper::resp('success', 200, [
+                'offer' => $data,
+
+            ]);
+        } else {
+            $response = \AppHelper::resp('fail', 200, [
+                'message' => "offer not found"
+            ]);
         }
-          
+
         return $response;
     }
 
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -117,7 +114,7 @@ class OffersController extends Controller
             "price" => "required|integer|min:1",
             "category_id" => "required|integer",
         ]);
-        
+
         if ($validator->fails()) {
             $errors = $validator->errors();
             $errorMessages = [];
@@ -131,34 +128,32 @@ class OffersController extends Controller
             }
 
             $code = 200;
-            $response = \AppHelper::resp('fail', $code, ['errors' =>  $errorMessages]);
+            $response = \AppHelper::resp('fail', $code, ['errors' => $errorMessages]);
 
 
         } else {
             $offer = Offers::find($id);
-            if($offer)
-            {
+            if ($offer) {
 
                 $offer->name = $request->name;
                 $offer->price = $request->price;
                 $offer->category_id = $request->category_id;
-                
-    
-               
+
+
+
                 $data = $offer->save();
-                if($data)
-                {
-                    $response = \AppHelper::resp('success', 200, ['message' =>  $offer]);
-                }else {
-                    
-                    $response = \AppHelper::resp('success', 200, ['error' =>  "offer not updated"]);
+                if ($data) {
+                    $response = \AppHelper::resp('success', 200, ['message' => $offer]);
+                } else {
+
+                    $response = \AppHelper::resp('success', 200, ['error' => "offer not updated"]);
                 }
 
 
 
 
             } else {
-                $response = \AppHelper::resp('fail', 200, ['error' =>  "offer not found"]);
+                $response = \AppHelper::resp('fail', 200, ['error' => "offer not found"]);
 
             }
 
@@ -170,7 +165,7 @@ class OffersController extends Controller
 
 
         }
-         
+
         return $response;
     }
 
@@ -184,25 +179,23 @@ class OffersController extends Controller
     {
         $offer = offers::find($id);
 
-      if($offer)
-      {
+        if ($offer) {
 
-          if($offer->delete())
-          {
-    
-            $response = \AppHelper::resp('success', 200, ['rate' =>  "offer deleted succesfully"]);
-        }else{
-            
-            $response = \AppHelper::resp('fail', 200, ['rate' =>  "Offer Not deleted"]);
-    
-          }
+            if ($offer->delete()) {
 
-      }else{
+                $response = \AppHelper::resp('success', 200, ['rate' => "offer deleted succesfully"]);
+            } else {
 
-        $response = \AppHelper::resp('fail', 200, ['rate' =>  "Offer Not found"]);
-      }
+                $response = \AppHelper::resp('fail', 200, ['rate' => "Offer Not deleted"]);
+
+            }
+
+        } else {
+
+            $response = \AppHelper::resp('fail', 200, ['rate' => "Offer Not found"]);
+        }
 
 
-     return $response;
+        return $response;
     }
 }
