@@ -65,7 +65,7 @@ class CategoriesController extends Controller
                 $response = \AppHelper::resp('success', 200, ['message' => 'Category created succesfully']);
 
             } else {
-                $response = \AppHelper::resp('fail', $code, ['message' => 'Category not created']);
+                $response = \AppHelper::resp('fail', 200, ['message' => 'Category not created']);
             }
 
         }
